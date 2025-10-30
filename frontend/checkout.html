@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - E-commerce Tucumán</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header Simplificado -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <h1>🛒 E-commerce TUC</h1>
+                </a>
+                <div class="checkout-steps">
+                    <span class="step active">1. Datos</span>
+                    <span class="step">2. Confirmación</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Formulario de Checkout -->
+    <main class="checkout-page">
+        <div class="container">
+            <h1>Finalizar Compra</h1>
+            
+            <div class="checkout-layout">
+                <!-- Formulario -->
+                <div class="checkout-form-container">
+                    <form id="checkout-form" class="checkout-form">
+                        <div class="form-section">
+                            <h2>Datos de Contacto</h2>
+                            
+                            <div class="form-group">
+                                <label for="nombre">Nombre Completo *</label>
+                                <input type="text" id="nombre" name="nombre" required>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="email">Email *</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="telefono">Teléfono *</label>
+                                    <input type="tel" id="telefono" name="telefono" 
+                                           placeholder="+54 381 123-4567" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-section">
+                            <h2>Dirección de Envío</h2>
+                            
+                            <div class="form-group">
+                                <label for="direccion">Dirección *</label>
+                                <input type="text" id="direccion" name="direccion" 
+                                       placeholder="Calle y número" required>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="ciudad">Ciudad *</label>
+                                    <input type="text" id="ciudad" name="ciudad" 
+                                           value="Tucumán" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="codigo_postal">Código Postal</label>
+                                    <input type="text" id="codigo_postal" name="codigo_postal">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-section">
+                            <h2>Método de Pago</h2>
+                            
+                            <div class="payment-methods">
+                                <label class="payment-method">
+                                    <input type="radio" name="metodo_pago" value="efectivo" checked>
+                                    <div class="method-content">
+                                        <span class="method-icon">💵</span>
+                                        <div>
+                                            <strong>Efectivo</strong>
+                                            <p>Pagar al recibir el pedido</p>
+                                        </div>
+                                    </div>
+                                </label>
+                                
+                                <label class="payment-method">
+                                    <input type="radio" name="metodo_pago" value="transferencia">
+                                    <div class="method-content">
+                                        <span class="method-icon">🏦</span>
+                                        <div>
+                                            <strong>Transferencia</strong>
+                                            <p>Te enviaremos los datos bancarios</p>
+                                        </div>
+                                    </div>
+                                </label>
+                                
+                                <label class="payment-method">
+                                    <input type="radio" name="metodo_pago" value="mercadopago">
+                                    <div class="method-content">
+                                        <span class="method-icon">💳</span>
+                                        <div>
+                                            <strong>Mercado Pago</strong>
+                                            <p>Tarjeta de crédito/débito</p>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-section">
+                            <h2>Notas del Pedido (Opcional)</h2>
+                            <div class="form-group">
+                                <label for="notas">Comentarios adicionales</label>
+                                <textarea id="notas" name="notas" rows="4" 
+                                          placeholder="Ej: Timbre roto, tocar puerta"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <a href="carrito.html" class="btn btn-secondary">
+                                ← Volver al carrito
+                            </a>
+                            <button type="submit" class="btn btn-primary" id="btn-finalizar">
+                                Confirmar Pedido
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Resumen del Pedido -->
+                <div class="checkout-summary">
+                    <h3>Resumen del Pedido</h3>
+                    
+                    <div id="checkout-items" class="checkout-items">
+                        <!-- Se llena con JavaScript -->
+                    </div>
+                    
+                    <div class="summary-totals">
+                        <div class="summary-line">
+                            <span>Subtotal:</span>
+                            <span id="checkout-subtotal">$0.00</span>
+                        </div>
+                        
+                        <div class="summary-line">
+                            <span>Envío:</span>
+                            <span id="checkout-envio">$5.000</span>
+                        </div>
+                        
+                        <div class="summary-line total">
+                            <span><strong>Total:</strong></span>
+                            <span id="checkout-total"><strong>$0.00</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de Confirmación -->
+    <div id="modal-confirmacion" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header success">
+                <div class="success-icon">✓</div>
+                <h2>¡Pedido Realizado!</h2>
+            </div>
+            <div class="modal-body">
+                <p>Tu pedido ha sido registrado exitosamente.</p>
+                <p><strong>Número de pedido:</strong> <span id="numero-pedido"></span></p>
+                <p>Te enviaremos un email con los detalles a <span id="email-confirmacion"></span></p>
+                <p class="info-box">
+                    📱 También puedes hacer seguimiento de tu pedido por WhatsApp
+                </p>
+            </div>
+            <div class="modal-footer">
+                <a href="index.html" class="btn btn-primary">Volver al inicio</a>
+                <button id="btn-whatsapp" class="btn btn-success">
+                    💬 Contactar por WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 E-commerce TUC. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/carrito.js"></script>
+    <script src="js/auth-helper.js"></script>
+    <script>
+        // Cargar resumen del carrito
+        window.addEventListener('DOMContentLoaded', () => {
+            const items = carrito.obtenerItems();
+            
+            if (items.length === 0) {
+                alert('Tu carrito está vacío');
+                window.location.href = 'productos.html';
+                return;
+            }
+            
+            // Renderizar items en el resumen
+            const checkoutItems = document.getElementById('checkout-items');
+            checkoutItems.innerHTML = items.map(item => `
+                <div class="checkout-item">
+                    <img src="${item.imagen || 'img/placeholder.jpg'}" alt="${item.nombre}">
+                    <div class="item-details">
+                        <h4>${item.nombre}</h4>
+                        <p>Cantidad: ${item.cantidad}</p>
+                    </div>
+                    <div class="item-price">
+                        $${(item.precio * item.cantidad).toLocaleString('es-AR', { minimumFractionDigits: 2 })}
+                    </div>
+                </div>
+            `).join('');
+            
+            // Calcular totales
+            const subtotal = carrito.calcularTotal();
+            const envio = subtotal > 50000 ? 0 : 5000;
+            const total = subtotal + envio;
+            
+            document.getElementById('checkout-subtotal').textContent = `$${subtotal.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
+            document.getElementById('checkout-envio').textContent = envio === 0 ? 'GRATIS' : `$${envio.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
+            document.getElementById('checkout-total').textContent = `$${total.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
+        });
+        
+        // Manejar envío del formulario
+        document.getElementById('checkout-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const btnFinalizar = document.getElementById('btn-finalizar');
+            btnFinalizar.disabled = true;
+            btnFinalizar.textContent = 'Procesando...';
+            
+            // Obtener datos del formulario
+            const formData = new FormData(e.target);
+            const items = carrito.obtenerItems();
+            
+            const pedido = {
+                nombre_cliente: formData.get('nombre'),
+                email: formData.get('email'),
+                telefono: formData.get('telefono'),
+                direccion: formData.get('direccion'),
+                ciudad: formData.get('ciudad'),
+                codigo_postal: formData.get('codigo_postal'),
+                metodo_pago: formData.get('metodo_pago'),
+                notas: formData.get('notas'),
+                items: items.map(item => ({
+                    producto_id: item.id,
+                    cantidad: item.cantidad
+                })),
+                total: carrito.calcularTotal() + (carrito.calcularTotal() > 50000 ? 0 : 5000)
+            };
+            
+            try {
+                const response = await API.post('/pedidos', pedido);
+                
+                if (response.success) {
+                    // Mostrar modal de éxito
+                    document.getElementById('numero-pedido').textContent = response.data.numero_pedido;
+                    document.getElementById('email-confirmacion').textContent = pedido.email;
+                    document.getElementById('modal-confirmacion').style.display = 'flex';
+                    
+                    // Configurar WhatsApp
+                    const mensaje = `Hola! Acabo de realizar el pedido ${response.data.numero_pedido}. Me gustaría hacer seguimiento.`;
+                    document.getElementById('btn-whatsapp').onclick = () => {
+                        window.open(`https://wa.me/5493811234567?text=${encodeURIComponent(mensaje)}`, '_blank');
+                    };
+                    
+                    // Vaciar carrito
+                    carrito.vaciar();
+                } else {
+                    throw new Error(response.error);
+                }
+                
+            } catch (error) {
+                alert('Error al procesar el pedido: ' + error.message);
+                btnFinalizar.disabled = false;
+                btnFinalizar.textContent = 'Confirmar Pedido';
+            }
+        });
+    </script>
+</body>
+</html>

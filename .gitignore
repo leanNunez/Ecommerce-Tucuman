@@ -1,0 +1,26 @@
+# Dependencias Node.js
+node_modules/
+backend/node_modules/
+
+# Variables de entorno
+.env
+backend/.env
+
+# Logs
+*.log
+npm-debug.log*
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos de base de datos
+*.sql
+*.db
+*.sqlite

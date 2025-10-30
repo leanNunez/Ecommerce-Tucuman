@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - E-commerce Tucumán</title>
+    <link rel="stylesheet" href="css/auth.css">
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>🛒 Bienvenido</h1>
+            <p>Inicia sesión en tu cuenta</p>
+        </div>
+
+        <div id="alert" class="alert"></div>
+
+        <form id="login-form">
+            <div class="form-group">
+                <label for="email">Correo Electrónico</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="tu@email.com"
+                    required
+                    autocomplete="email"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    placeholder="••••••••"
+                    required
+                    autocomplete="current-password"
+                >
+            </div>
+
+            <button type="submit" class="btn-login" id="btn-submit">
+                Iniciar Sesión
+            </button>
+        </form>
+
+        <div class="form-footer">
+            <p style="margin-bottom: 0.5rem;">¿No tienes cuenta?</p>
+            <a href="registro.html" class="btn-registro-link">
+                📝 Regístrate aquí
+            </a>
+        </div>
+
+        <div class="form-footer" style="border-top: none; padding-top: 1rem;">
+            <a href="index.html" style="color: #6b7280;">← Volver a la tienda</a>
+        </div>
+
+        <div class="admin-link">
+            <a href="admin/login.html">Acceso para administradores →</a>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        const loginForm = document.getElementById('login-form');
+        const alertDiv = document.getElementById('alert');
+        const btnSubmit = document.getElementById('btn-submit');
+
+        // Verificar si ya hay sesión activa
+        window.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                window.location.href = 'index.html';
+            }
+        });
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                mostrarAlerta('Por favor completa todos los campos', 'error');
+                return;
+            }
+
+            btnSubmit.disabled = true;
+            btnSubmit.textContent = 'Iniciando sesión...';
+
+            try {
+                const response = await API.post('/auth/login', {
+                    email,
+                    password
+                });
+
+                if (response.success && response.data) {
+                    localStorage.setItem('token', response.data.token);
+                    localStorage.setItem('usuario', JSON.stringify(response.data.usuario));
+
+                    mostrarAlerta('¡Inicio de sesión exitoso!', 'success');
+
+                    setTimeout(() => {
+                        // Si es admin, redirigir al panel admin
+                        if (response.data.usuario.tipo === 'admin') {
+                            window.location.href = 'admin/index.html';
+                        } else {
+                            window.location.href = 'index.html';
+                        }
+                    }, 1000);
+                } else {
+                    mostrarAlerta(response.error || 'Error al iniciar sesión', 'error');
+                    btnSubmit.disabled = false;
+                    btnSubmit.textContent = 'Iniciar Sesión';
+                }
+
+            } catch (error) {
+                console.error('Error en login:', error);
+                mostrarAlerta(error.message || 'Error al conectar con el servidor', 'error');
+                btnSubmit.disabled = false;
+                btnSubmit.textContent = 'Iniciar Sesión';
+            }
+        });
+
+        function mostrarAlerta(mensaje, tipo) {
+            alertDiv.textContent = mensaje;
+            alertDiv.className = `alert alert-${tipo}`;
+            alertDiv.style.display = 'block';
+
+            if (tipo === 'success') {
+                setTimeout(() => {
+                    alertDiv.style.display = 'none';
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>

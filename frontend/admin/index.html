@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - E-commerce</title>
+    <link rel="stylesheet" href="../css/admin-dashboard.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>🛒 E-commerce</h2>
+                <div class="sidebar-user">
+                    <span id="user-name">Cargando...</span><br>
+                    <small id="user-email"></small>
+                </div>
+            </div>
+
+            <ul class="sidebar-nav">
+                <li><a href="#" class="active">📊 Dashboard</a></li>
+                <li><a href="#">📦 Productos</a></li>
+                <li><a href="#">🛒 Pedidos</a></li>
+                <li><a href="#">👥 Clientes</a></li>
+                <li><a href="#">📂 Categorías</a></li>
+                <li><a href="../index.html">🏪 Ver Tienda</a></li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="cerrarSesion()">
+                    🚪 Cerrar Sesión
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1>Dashboard</h1>
+                <div class="breadcrumb">Panel de Administración / Dashboard</div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Productos</h3>
+                    <div class="stat-value" id="stat-productos">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Stock Total</h3>
+                    <div class="stat-value" id="stat-stock">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Destacados</h3>
+                    <div class="stat-value" id="stat-destacados">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Categorías</h3>
+                    <div class="stat-value" id="stat-categorias">0</div>
+                </div>
+            </div>
+
+            <!-- Products Table -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h2>Productos Recientes</h2>
+                    <button class="btn-primary" onclick="alert('Funcionalidad próximamente')">
+                        + Nuevo Producto
+                    </button>
+                </div>
+
+                <div id="loading" class="loading">
+                    <p>⏳ Cargando productos...</p>
+                </div>
+
+                <div id="productos-tabla" style="display: none;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Nombre</th>
+                                <th>Categoría</th>
+                                <th>Precio</th>
+                                <th>Stock</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productos-tbody">
+                            <!-- Se llena con JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script>
+        // Verificar autenticación
+        window.addEventListener('DOMContentLoaded', () => {
+            verificarAutenticacion();
+            cargarDatosUsuario();
+            cargarEstadisticas();
+            cargarProductos();
+        });
+
+        function verificarAutenticacion() {
+            const token = localStorage.getItem('token');
+            const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Verificar si es admin
+            if (usuario.tipo !== 'admin') {
+                alert('Acceso denegado. Solo administradores.');
+                localStorage.clear();
+                window.location.href = '../index.html';
+            }
+        }
+
+        function cargarDatosUsuario() {
+            const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+            document.getElementById('user-name').textContent = usuario.nombre || 'Usuario';
+            document.getElementById('user-email').textContent = usuario.email || '';
+        }
+
+        async function cargarEstadisticas() {
+            try {
+                const response = await API.get('/productos', { limit: 1000 });
+                
+                if (response.success) {
+                    const productos = response.data;
+                    
+                    document.getElementById('stat-productos').textContent = productos.length;
+                    
+                    const stockTotal = productos.reduce((sum, p) => sum + parseInt(p.stock || 0), 0);
+                    document.getElementById('stat-stock').textContent = stockTotal;
+                    
+                    const destacados = productos.filter(p => p.destacado).length;
+                    document.getElementById('stat-destacados').textContent = destacados;
+                }
+
+                // Cargar categorías
+                const catResponse = await API.get('/categorias');
+                if (catResponse.success) {
+                    document.getElementById('stat-categorias').textContent = catResponse.data.length;
+                }
+            } catch (error) {
+                console.error('Error al cargar estadísticas:', error);
+            }
+        }
+
+        async function cargarProductos() {
+            const loading = document.getElementById('loading');
+            const tabla = document.getElementById('productos-tabla');
+            const tbody = document.getElementById('productos-tbody');
+
+            try {
+                const response = await API.get('/productos', { limit: 10, orden: 'recientes' });
+
+                loading.style.display = 'none';
+                tabla.style.display = 'block';
+
+                if (response.success && response.data.length > 0) {
+                    tbody.innerHTML = response.data.map(producto => `
+                        <tr>
+                            <td>
+                                <img src="${producto.imagen_principal || '../img/placeholder.jpg'}" 
+                                     alt="${producto.nombre}"
+                                     class="product-img"
+                                     onerror="this.src='../img/placeholder.jpg'">
+                            </td>
+                            <td><strong>${producto.nombre}</strong></td>
+                            <td>${producto.categoria_nombre || 'Sin categoría'}</td>
+                            <td><strong>$${parseFloat(producto.precio).toLocaleString('es-AR')}</strong></td>
+                            <td>${producto.stock}</td>
+                            <td>
+                                <span class="badge ${producto.activo ? 'badge-success' : 'badge-danger'}">
+                                    ${producto.activo ? 'Activo' : 'Inactivo'}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-sm btn-edit" onclick="editarProducto(${producto.id})">
+                                        ✏️ Editar
+                                    </button>
+                                    <button class="btn-sm btn-delete" onclick="eliminarProducto(${producto.id})">
+                                        🗑️ Eliminar
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 2rem;">No hay productos</td></tr>';
+                }
+            } catch (error) {
+                console.error('Error al cargar productos:', error);
+                loading.style.display = 'none';
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 2rem; color: #ef4444;">Error al cargar productos</td></tr>';
+            }
+        }
+
+        function editarProducto(id) {
+            alert(`Editar producto ${id} - Funcionalidad próximamente`);
+        }
+
+        async function eliminarProducto(id) {
+            if (!confirm('¿Estás seguro de eliminar este producto?')) return;
+
+            try {
+                const response = await API.delete(`/productos/${id}`);
+                
+                if (response.success) {
+                    alert('Producto eliminado exitosamente');
+                    cargarProductos();
+                    cargarEstadisticas();
+                } else {
+                    alert('Error al eliminar: ' + response.error);
+                }
+            } catch (error) {
+                alert('Error al eliminar producto');
+                console.error(error);
+            }
+        }
+
+        function cerrarSesion() {
+            if (confirm('¿Cerrar sesión?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('usuario');
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+</html>

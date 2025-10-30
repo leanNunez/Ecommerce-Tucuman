@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Pedidos - E-commerce Tucumán</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/user-dropdown.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <h1>🛒 E-commerce TUC</h1>
+                </a>
+                <nav class="nav">
+                    <a href="productos.html">Productos</a>
+                    <a href="carrito.html" class="cart-link">
+                        🛒 Carrito
+                        <span id="cart-count" class="cart-badge">0</span>
+                    </a>
+                    <a href="login.html" id="auth-link">👤 Iniciar Sesión</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="index.html">Inicio</a> / <span>Mis Pedidos</span>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="pedidos-container">
+        <div class="pedidos-layout">
+            <!-- Sidebar -->
+            <aside class="perfil-sidebar">
+                <div class="perfil-avatar" id="sidebar-avatar">JD</div>
+                <div class="perfil-user-info">
+                    <h2 id="sidebar-nombre">Cargando...</h2>
+                    <p id="sidebar-email">...</p>
+                </div>
+                
+                <ul class="perfil-menu">
+                    <li><a href="perfil.html">👤 Mi Perfil</a></li>
+                    <li><a href="mis-pedidos.html" class="active">📦 Mis Pedidos</a></li>
+                    <li><a href="mis-direcciones.html">📍 Direcciones</a></li>
+                    <li><a href="favoritos.html">❤️ Favoritos</a></li>
+                </ul>
+            </aside>
+
+            <!-- Content -->
+            <main class="pedidos-content">
+                <h1>Mis Pedidos</h1>
+                <p>Historial de compras y seguimiento</p>
+
+                <div id="pedidos-lista">
+                    <!-- Estado vacío -->
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📦</div>
+                        <h3>Aún no tienes pedidos</h3>
+                        <p>¡Comienza a comprar y aparecerán aquí!</p>
+                        <a href="productos.html" class="btn btn-primary">
+                            Ver Productos
+                        </a>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 E-commerce TUC. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/carrito.js"></script>
+    <script src="js/auth-header.js"></script>
+    <script>
+        // Verificar autenticación
+        const token = localStorage.getItem('token');
+        const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+        
+        if (!token) {
+            window.location.href = 'login.html';
+        }
+
+        // Cargar datos
+        document.addEventListener('DOMContentLoaded', () => {
+            // Actualizar sidebar
+            document.getElementById('sidebar-nombre').textContent = usuario.nombre || 'Usuario';
+            document.getElementById('sidebar-email').textContent = usuario.email || '';
+            
+            const iniciales = obtenerIniciales(usuario.nombre);
+            document.getElementById('sidebar-avatar').textContent = iniciales;
+            
+            // En el futuro aquí cargarías los pedidos desde la API
+            // cargarPedidos();
+        });
+
+        function obtenerIniciales(nombre) {
+            if (!nombre) return '?';
+            const palabras = nombre.trim().split(' ');
+            if (palabras.length === 1) return palabras[0].charAt(0).toUpperCase();
+            return (palabras[0].charAt(0) + palabras[palabras.length - 1].charAt(0)).toUpperCase();
+        }
+
+        // Ejemplo de cómo se verían los pedidos (cuando tengas el backend)
+        /*
+        async function cargarPedidos() {
+            const pedidos = await API.get('/pedidos/mis-pedidos');
+            
+            if (pedidos.length === 0) {
+                // Mostrar estado vacío
+                return;
+            }
+            
+            const html = pedidos.map(pedido => `
+                <div class="pedido-card">
+                    <div class="pedido-header">
+                        <div class="pedido-info">
+                            <div>
+                                <label>Pedido</label>
+                                <span>#${pedido.id}</span>
+                            </div>
+                            <div>
+                                <label>Fecha</label>
+                                <span>${formatearFecha(pedido.fecha)}</span>
+                            </div>
+                        </div>
+                        <div class="pedido-estado estado-${pedido.estado}">
+                            ${pedido.estado}
+                        </div>
+                    </div>
+                    <!-- Productos del pedido -->
+                    <div class="pedido-total">
+                        <span class="pedido-total-label">Total:</span>
+                        <span class="pedido-total-valor">$${pedido.total}</span>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('pedidos-lista').innerHTML = html;
+        }
+        */
+    </script>
+</body>
+</html>

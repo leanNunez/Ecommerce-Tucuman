@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Producto - E-commerce Tucumán</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/user-dropdown.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <h1>🛒 E-commerce TUC</h1>
+                </a>
+                <nav class="nav">
+                    <a href="productos.html">Productos</a>
+                    <a href="carrito.html" class="cart-link">
+                        🛒 Carrito
+                        <span id="cart-count" class="cart-badge">0</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="index.html">Inicio</a> / 
+            <a href="productos.html">Productos</a> / 
+            <span id="breadcrumb-producto">Cargando...</span>
+        </div>
+    </div>
+
+    <!-- Contenido del Producto -->
+    <main class="producto-detalle-page">
+        <div class="container">
+            <!-- Mensaje de carga -->
+            <div id="loading" class="loading-message">
+                <p>⏳ Cargando producto...</p>
+            </div>
+
+            <!-- Mensaje de error -->
+            <div id="error-message" class="error-message" style="display: none;">
+                <h2>😕 Producto no encontrado</h2>
+                <p>Lo sentimos, el producto que buscas no está disponible.</p>
+                <a href="productos.html" class="btn btn-primary">Ver todos los productos</a>
+            </div>
+
+            <!-- Detalle del producto -->
+            <div id="producto-detalle" class="producto-detalle" style="display: none;">
+                <div class="producto-imagenes">
+                    <div class="imagen-principal">
+                        <img id="imagen-principal" src="" alt="">
+                    </div>
+                    <div id="imagenes-thumbnail" class="imagenes-thumbnail">
+                        <!-- Se llenan con JavaScript -->
+                    </div>
+                </div>
+
+                <div class="producto-info">
+                    <h1 id="producto-nombre">Nombre del Producto</h1>
+                    
+                    <div class="producto-precio">
+                        <span class="precio-actual" id="producto-precio">$0.00</span>
+                    </div>
+
+                    <div class="producto-descripcion">
+                        <h3>Descripción</h3>
+                        <p id="producto-descripcion">Descripción del producto...</p>
+                    </div>
+
+                    <div class="producto-stock" id="producto-stock">
+                        <span class="stock-disponible">✅ Stock disponible</span>
+                    </div>
+
+                    <div class="producto-acciones">
+                        <div class="cantidad-selector">
+                            <label for="cantidad">Cantidad:</label>
+                            <div class="cantidad-controls">
+                                <button id="btn-decrementar" class="btn-cantidad">-</button>
+                                <input type="number" id="cantidad" value="1" min="1" max="99">
+                                <button id="btn-incrementar" class="btn-cantidad">+</button>
+                            </div>
+                        </div>
+                        
+                        <button id="btn-agregar-carrito" class="btn btn-primary btn-lg">
+                            🛒 Agregar al Carrito
+                        </button>
+                    </div>
+
+                    <div class="producto-detalles">
+                        <h3>Detalles del Producto</h3>
+                        <ul id="producto-especificaciones">
+                            <!-- Se llenan con JavaScript -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 E-commerce TUC. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/carrito.js"></script>
+    <script src="js/producto-detalle.js"></script>
+    <script src="js/auth-helper.js"></script>
+    <script src="js/auth-header.js"></script>
+</body>
+</html>

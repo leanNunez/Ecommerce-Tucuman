@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse - E-commerce Tucumán</title>
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+    <div class="registro-container">
+        <div class="registro-header">
+            <h1>🛒 Crear Cuenta</h1>
+            <p>Únete a E-commerce Tucumán</p>
+        </div>
+
+        <div id="alert" class="alert"></div>
+
+        <form id="registro-form">
+            <div class="form-group">
+                <label for="nombre">
+                    Nombre Completo <span class="required">*</span>
+                </label>
+                <input 
+                    type="text" 
+                    id="nombre" 
+                    name="nombre" 
+                    placeholder="Ej: Juan Pérez"
+                    required
+                    autocomplete="name"
+                >
+                <span class="error-message" id="error-nombre"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="email">
+                    Correo Electrónico <span class="required">*</span>
+                </label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="tu@email.com"
+                    required
+                    autocomplete="email"
+                >
+                <span class="error-message" id="error-email"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="password">
+                    Contraseña <span class="required">*</span>
+                </label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    placeholder="Mínimo 6 caracteres"
+                    required
+                    autocomplete="new-password"
+                >
+                <div class="password-strength">
+                    <div class="password-strength-bar" id="password-strength-bar"></div>
+                </div>
+                <span class="error-message" id="error-password"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="password-confirm">
+                    Confirmar Contraseña <span class="required">*</span>
+                </label>
+                <input 
+                    type="password" 
+                    id="password-confirm" 
+                    name="password-confirm" 
+                    placeholder="Repite tu contraseña"
+                    required
+                    autocomplete="new-password"
+                >
+                <span class="error-message" id="error-password-confirm"></span>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="telefono">Teléfono</label>
+                    <input 
+                        type="tel" 
+                        id="telefono" 
+                        name="telefono" 
+                        placeholder="381-1234567"
+                        autocomplete="tel"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="ciudad">Ciudad</label>
+                    <input 
+                        type="text" 
+                        id="ciudad" 
+                        name="ciudad" 
+                        placeholder="Tucumán"
+                        value="Tucumán"
+                        autocomplete="address-level2"
+                    >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="direccion">Dirección</label>
+                <input 
+                    type="text" 
+                    id="direccion" 
+                    name="direccion" 
+                    placeholder="Calle, número, barrio"
+                    autocomplete="street-address"
+                >
+            </div>
+
+            <button type="submit" class="btn-registro" id="btn-submit">
+                Crear Cuenta
+            </button>
+
+            <p class="terms">
+                Al registrarte, aceptas nuestros 
+                <a href="#">Términos de Servicio</a> y 
+                <a href="#">Política de Privacidad</a>
+            </p>
+        </form>
+
+        <div class="form-footer">
+            <p style="margin-bottom: 0.5rem;">¿Ya tienes cuenta?</p>
+            <a href="login.html" class="btn-login-link">
+                🔐 Iniciar Sesión
+            </a>
+        </div>
+
+        <div class="form-footer" style="border-top: none; padding-top: 1rem;">
+            <a href="index.html" style="color: #6b7280;">← Volver a la tienda</a>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        const form = document.getElementById('registro-form');
+        const alertDiv = document.getElementById('alert');
+        const btnSubmit = document.getElementById('btn-submit');
+        const passwordInput = document.getElementById('password');
+        const passwordConfirmInput = document.getElementById('password-confirm');
+        const strengthBar = document.getElementById('password-strength-bar');
+
+        // Validación de fortaleza de contraseña
+        passwordInput.addEventListener('input', () => {
+            const password = passwordInput.value;
+            let strength = 0;
+
+            if (password.length >= 6) strength++;
+            if (password.length >= 10) strength++;
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+            if (/\d/.test(password)) strength++;
+            if (/[^a-zA-Z0-9]/.test(password)) strength++;
+
+            strengthBar.className = 'password-strength-bar';
+            if (strength <= 2) strengthBar.classList.add('strength-weak');
+            else if (strength <= 4) strengthBar.classList.add('strength-medium');
+            else strengthBar.classList.add('strength-strong');
+        });
+
+        // Submit del formulario
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Limpiar errores previos
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.style.display = 'none';
+                el.previousElementSibling.classList.remove('error');
+            });
+
+            // Obtener valores
+            const nombre = document.getElementById('nombre').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const passwordConfirm = document.getElementById('password-confirm').value;
+            const telefono = document.getElementById('telefono').value.trim();
+            const direccion = document.getElementById('direccion').value.trim();
+            const ciudad = document.getElementById('ciudad').value.trim();
+
+            // Validaciones
+            let errores = false;
+
+            if (!nombre || nombre.length < 3) {
+                mostrarError('nombre', 'El nombre debe tener al menos 3 caracteres');
+                errores = true;
+            }
+
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                mostrarError('email', 'Email inválido');
+                errores = true;
+            }
+
+            if (!password || password.length < 6) {
+                mostrarError('password', 'La contraseña debe tener al menos 6 caracteres');
+                errores = true;
+            }
+
+            if (password !== passwordConfirm) {
+                mostrarError('password-confirm', 'Las contraseñas no coinciden');
+                errores = true;
+            }
+
+            if (errores) return;
+
+            // Deshabilitar botón
+            btnSubmit.disabled = true;
+            btnSubmit.textContent = 'Creando cuenta...';
+
+            try {
+                const response = await API.post('/auth/registro', {
+                    nombre,
+                    email,
+                    password,
+                    telefono: telefono || null,
+                    direccion: direccion || null,
+                    ciudad: ciudad || 'Tucumán'
+                });
+
+                if (response.success) {
+                    // Guardar token y usuario
+                    localStorage.setItem('token', response.data.token);
+                    localStorage.setItem('usuario', JSON.stringify(response.data.usuario));
+
+                    mostrarAlerta('¡Cuenta creada exitosamente! Redirigiendo...', 'success');
+
+                    // Redirigir a la tienda
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
+                } else {
+                    mostrarAlerta(response.error || 'Error al crear cuenta', 'error');
+                    btnSubmit.disabled = false;
+                    btnSubmit.textContent = 'Crear Cuenta';
+                }
+
+            } catch (error) {
+                console.error('Error en registro:', error);
+                mostrarAlerta(error.message || 'Error al conectar con el servidor', 'error');
+                btnSubmit.disabled = false;
+                btnSubmit.textContent = 'Crear Cuenta';
+            }
+        });
+
+        function mostrarError(campo, mensaje) {
+            const input = document.getElementById(campo);
+            const errorDiv = document.getElementById(`error-${campo}`);
+            
+            input.classList.add('error');
+            errorDiv.textContent = mensaje;
+            errorDiv.style.display = 'block';
+        }
+
+        function mostrarAlerta(mensaje, tipo) {
+            alertDiv.textContent = mensaje;
+            alertDiv.className = `alert alert-${tipo}`;
+            alertDiv.style.display = 'block';
+
+            setTimeout(() => {
+                alertDiv.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

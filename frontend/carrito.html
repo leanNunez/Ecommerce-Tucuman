@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras - E-commerce Tucumán</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/user-dropdown.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <h1>🛒 E-commerce TUC</h1>
+                </a>
+                <nav class="nav">
+                    <a href="productos.html">Productos</a>
+                    <a href="carrito.html" class="cart-link active">
+                        🛒 Carrito
+                        <span id="cart-count" class="cart-badge">0</span>
+                    </a>
+                    <a href="login.html" id="auth-link">👤 Iniciar Sesión</a>
+                    <a href="registro.html" class="btn-registro">📝 Registrarse</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="index.html">Inicio</a> / <span>Carrito</span>
+        </div>
+    </div>
+
+    <!-- Contenido del Carrito -->
+    <main class="carrito-page">
+        <div class="container">
+            <h1>Carrito de Compras</h1>
+            
+            <div class="carrito-layout">
+                <!-- Items del Carrito -->
+                <div class="carrito-items">
+                    <div id="carrito-vacio" class="carrito-vacio">
+                        <div class="empty-cart-icon">🛒</div>
+                        <h2>Tu carrito está vacío</h2>
+                        <p>¡Agrega productos para comenzar tu compra!</p>
+                        <a href="productos.html" class="btn btn-primary">Ver productos</a>
+                    </div>
+                    
+                    <div id="carrito-contenido" style="display: none;">
+                        <!-- Se llena con JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Resumen del Pedido -->
+                <div id="carrito-resumen" class="carrito-resumen" style="display: none;">
+                    <h3>Resumen del Pedido</h3>
+                    
+                    <div class="resumen-line">
+                        <span>Subtotal:</span>
+                        <span id="resumen-subtotal">$0.00</span>
+                    </div>
+                    
+                    <div class="resumen-line">
+                        <span>Envío:</span>
+                        <span id="resumen-envio">$5.000</span>
+                    </div>
+                    
+                    <div class="resumen-line total">
+                        <span><strong>Total:</strong></span>
+                        <span id="resumen-total"><strong>$0.00</strong></span>
+                    </div>
+                    
+                    <div class="envio-gratis-info">
+                        <p id="envio-gratis-mensaje">
+                            🚚 Envío gratis en compras superiores a $50.000
+                        </p>
+                    </div>
+                    
+                    <a href="checkout.html" class="btn btn-primary btn-block">
+                        Finalizar Compra
+                    </a>
+                    
+                    <a href="productos.html" class="btn btn-secondary btn-block">
+                        Seguir Comprando
+                    </a>
+                    
+                    <button id="vaciar-carrito" class="btn btn-link btn-block">
+                        Vaciar carrito
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 E-commerce TUC. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/carrito.js"></script>
+    <script src="js/auth-helper.js"></script>
+    <script>
+        // Renderizar carrito al cargar la página
+        window.addEventListener('DOMContentLoaded', () => {
+            carrito.renderizarPagina();
+        });
+    </script>
+    <script src="js/auth-header.js"></script>
+</body>
+</html>

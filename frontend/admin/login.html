@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Admin E-commerce</title>
+    <link rel="stylesheet" href="../css/auth.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>🔐 Iniciar Sesión</h1>
+            <p>Panel de Administración</p>
+        </div>
+
+        <div id="alert" class="alert"></div>
+
+        <form id="login-form">
+            <div class="form-group">
+                <label for="email">Correo Electrónico</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="admin@example.com"
+                    required
+                    autocomplete="email"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    placeholder="••••••••"
+                    required
+                    autocomplete="current-password"
+                >
+            </div>
+
+            <button type="submit" class="btn-login" id="btn-submit">
+                Iniciar Sesión
+            </button>
+        </form>
+
+        <div class="demo-info">
+            <strong>💡 Credenciales de prueba:</strong><br>
+            Email: admin@ecommerce.com<br>
+            Contraseña: admin123
+        </div>
+
+        <div class="form-footer">
+            <a href="../index.html">← Volver a la tienda</a>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script>
+        const loginForm = document.getElementById('login-form');
+        const alertDiv = document.getElementById('alert');
+        const btnSubmit = document.getElementById('btn-submit');
+
+        // Verificar si ya hay sesión activa
+        window.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                window.location.href = 'index.html';
+            }
+        });
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            // Validaciones básicas
+            if (!email || !password) {
+                mostrarAlerta('Por favor completa todos los campos', 'error');
+                return;
+            }
+
+            // Deshabilitar botón
+            btnSubmit.disabled = true;
+            btnSubmit.textContent = 'Iniciando sesión...';
+
+            try {
+                // Llamar a la API de login
+                const response = await API.post('/auth/login', {
+                    email,
+                    password
+                });
+
+                if (response.success && response.data) {
+                    // Guardar token y datos del usuario
+                    localStorage.setItem('token', response.data.token);
+                    localStorage.setItem('usuario', JSON.stringify(response.data.usuario));
+
+                    mostrarAlerta('¡Inicio de sesión exitoso!', 'success');
+
+                    // Redirigir según el tipo de usuario
+                    setTimeout(() => {
+                        if (response.data.usuario.tipo === 'admin') {
+                            window.location.href = 'index.html'; // Dashboard admin
+                        } else {
+                            window.location.href = '../index.html'; // Tienda principal
+                        }
+                    }, 1000);
+                } else {
+                    mostrarAlerta(response.error || 'Error al iniciar sesión', 'error');
+                    btnSubmit.disabled = false;
+                    btnSubmit.textContent = 'Iniciar Sesión';
+                }
+
+            } catch (error) {
+                console.error('Error en login:', error);
+                mostrarAlerta(error.message || 'Error al conectar con el servidor', 'error');
+                btnSubmit.disabled = false;
+                btnSubmit.textContent = 'Iniciar Sesión';
+            }
+        });
+
+        function mostrarAlerta(mensaje, tipo) {
+            alertDiv.textContent = mensaje;
+            alertDiv.className = `alert alert-${tipo}`;
+            alertDiv.style.display = 'block';
+
+            if (tipo === 'success') {
+                setTimeout(() => {
+                    alertDiv.style.display = 'none';
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>

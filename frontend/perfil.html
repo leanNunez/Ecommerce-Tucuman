@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - E-commerce Tucumán</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/user-dropdown.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <h1>🛒 E-commerce TUC</h1>
+                </a>
+                <nav class="nav">
+                    <a href="productos.html">Productos</a>
+                    <a href="carrito.html" class="cart-link">
+                        🛒 Carrito
+                        <span id="cart-count" class="cart-badge">0</span>
+                    </a>
+                    <a href="login.html" id="auth-link">👤 Iniciar Sesión</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="index.html">Inicio</a> / <span>Mi Perfil</span>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="perfil-container">
+        <div class="perfil-layout">
+            <!-- Sidebar -->
+            <aside class="perfil-sidebar">
+                <div class="perfil-avatar" id="sidebar-avatar">JD</div>
+                <div class="perfil-user-info">
+                    <h2 id="sidebar-nombre">Cargando...</h2>
+                    <p id="sidebar-email">...</p>
+                </div>
+                
+                <ul class="perfil-menu">
+                    <li><a href="perfil.html" class="active">👤 Mi Perfil</a></li>
+                    <li><a href="mis-pedidos.html">📦 Mis Pedidos</a></li>
+                    <li><a href="mis-direcciones.html">📍 Direcciones</a></li>
+                    <li><a href="favoritos.html">❤️ Favoritos</a></li>
+                </ul>
+            </aside>
+
+            <!-- Content -->
+            <main class="perfil-content">
+                <h1>Mi Perfil</h1>
+                <p>Administra tu información personal</p>
+
+                <div id="alert" class="alert"></div>
+
+                <form id="perfil-form">
+                    <div class="form-section">
+                        <h3>Información Personal</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="nombre">Nombre Completo *</label>
+                                <input type="text" id="nombre" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" disabled>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Información de Contacto</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="telefono">Teléfono</label>
+                                <input type="tel" id="telefono" placeholder="381-1234567">
+                            </div>
+                            <div class="form-group">
+                                <label for="ciudad">Ciudad</label>
+                                <input type="text" id="ciudad" placeholder="San Miguel de Tucumán">
+                            </div>
+                            <div class="form-group form-group-full">
+                                <label for="direccion">Dirección</label>
+                                <input type="text" id="direccion" placeholder="Calle, número, barrio">
+                            </div>
+                            <div class="form-group">
+                                <label for="codigo_postal">Código Postal</label>
+                                <input type="text" id="codigo_postal" placeholder="T4000">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary">
+                            💾 Guardar Cambios
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="location.reload()">
+                            ↺ Cancelar
+                        </button>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 E-commerce TUC. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/carrito.js"></script>
+    <script src="js/auth-header.js"></script>
+    <script>
+        // Verificar autenticación
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = 'login.html';
+        }
+
+        // Cargar datos del perfil
+        document.addEventListener('DOMContentLoaded', async () => {
+            await cargarPerfil();
+        });
+
+        async function cargarPerfil() {
+            try {
+                const response = await API.get('/auth/perfil');
+                
+                if (response.success) {
+                    const usuario = response.data;
+                    
+                    // Llenar formulario
+                    document.getElementById('nombre').value = usuario.nombre || '';
+                    document.getElementById('email').value = usuario.email || '';
+                    document.getElementById('telefono').value = usuario.telefono || '';
+                    document.getElementById('ciudad').value = usuario.ciudad || '';
+                    document.getElementById('direccion').value = usuario.direccion || '';
+                    document.getElementById('codigo_postal').value = usuario.codigo_postal || '';
+                    
+                    // Actualizar sidebar
+                    document.getElementById('sidebar-nombre').textContent = usuario.nombre;
+                    document.getElementById('sidebar-email').textContent = usuario.email;
+                    
+                    const iniciales = obtenerIniciales(usuario.nombre);
+                    document.getElementById('sidebar-avatar').textContent = iniciales;
+                }
+            } catch (error) {
+                console.error('Error al cargar perfil:', error);
+                mostrarAlerta('Error al cargar perfil', 'error');
+            }
+        }
+
+        // Guardar cambios
+        document.getElementById('perfil-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const datos = {
+                nombre: document.getElementById('nombre').value,
+                telefono: document.getElementById('telefono').value || null,
+                ciudad: document.getElementById('ciudad').value || null,
+                direccion: document.getElementById('direccion').value || null,
+                codigo_postal: document.getElementById('codigo_postal').value || null
+            };
+            
+            try {
+                const response = await API.put('/auth/perfil', datos);
+                
+                if (response.success) {
+                    mostrarAlerta('✅ Perfil actualizado correctamente', 'success');
+                    
+                    // Actualizar localStorage
+                    const usuario = JSON.parse(localStorage.getItem('usuario'));
+                    usuario.nombre = datos.nombre;
+                    localStorage.setItem('usuario', JSON.stringify(usuario));
+                    
+                    // Recargar header
+                    location.reload();
+                } else {
+                    mostrarAlerta('❌ ' + (response.error || 'Error al actualizar'), 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarAlerta('❌ Error al actualizar perfil', 'error');
+            }
+        });
+
+        function mostrarAlerta(mensaje, tipo) {
+            const alert = document.getElementById('alert');
+            alert.textContent = mensaje;
+            alert.className = `alert alert-${tipo}`;
+            alert.style.display = 'block';
+            
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        }
+
+        function obtenerIniciales(nombre) {
+            if (!nombre) return '?';
+            const palabras = nombre.trim().split(' ');
+            if (palabras.length === 1) return palabras[0].charAt(0).toUpperCase();
+            return (palabras[0].charAt(0) + palabras[palabras.length - 1].charAt(0)).toUpperCase();
+        }
+    </script>
+</body>
+</html>

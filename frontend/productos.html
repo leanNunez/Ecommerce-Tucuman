@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos - E-commerce Tucumán</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/productos.css">
+    <link rel="stylesheet" href="css/user-dropdown.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <h1>🛒 E-commerce TUC</h1>
+                </a>
+                
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Buscar productos...">
+                    <button id="search-btn" class="btn-search">🔍</button>
+                </div>
+                
+                <nav class="nav">
+                    <a href="productos.html">Productos</a>
+                    <a href="carrito.html" class="cart-link">
+                        🛒 Carrito
+                        <span id="cart-count" class="cart-badge">0</span>
+                    </a>
+                    <a href="login.html" id="auth-link">👤 Iniciar Sesión</a>
+                    <a href="registro.html" class="btn-registro-nav">📝 Registrarse</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="index.html">Inicio</a> / <span>Productos</span>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <main class="productos-page">
+        <div class="container">
+            <div class="productos-layout">
+                
+                <!-- Sidebar de Filtros -->
+                <aside class="filtros-sidebar">
+                    <div class="filtro-section">
+                        <h3>Categorías</h3>
+                        <div id="filtro-categorias" class="filtro-group">
+                            <label>
+                                <input type="radio" name="categoria" value="" checked>
+                                Cargando...
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="filtro-section">
+                        <h3>Precio</h3>
+                        <div class="filtro-group">
+                            <label>
+                                <input type="radio" name="precio" value="" checked>
+                                Todos
+                            </label>
+                            <label>
+                                <input type="radio" name="precio" value="0-10000">
+                                Hasta $10.000
+                            </label>
+                            <label>
+                                <input type="radio" name="precio" value="10000-50000">
+                                $10.000 - $50.000
+                            </label>
+                            <label>
+                                <input type="radio" name="precio" value="50000-100000">
+                                $50.000 - $100.000
+                            </label>
+                            <label>
+                                <input type="radio" name="precio" value="100000-999999">
+                                Más de $100.000
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="filtro-section">
+                        <h3>Ordenar por</h3>
+                        <select id="orden-select" class="filtro-select">
+                            <option value="recientes">Más recientes</option>
+                            <option value="precio_asc">Precio: menor a mayor</option>
+                            <option value="precio_desc">Precio: mayor a menor</option>
+                            <option value="nombre">Nombre A-Z</option>
+                            <option value="ventas">Más vendidos</option>
+                        </select>
+                    </div>
+                    
+                    <button id="limpiar-filtros" class="btn btn-secondary btn-block">
+                        Limpiar filtros
+                    </button>
+                </aside>
+
+                <!-- Grid de Productos -->
+                <div class="productos-content">
+                    <div class="productos-header">
+                        <h1 id="productos-titulo">Todos los Productos</h1>
+                        <span id="productos-count" class="productos-count">
+                            Cargando...
+                        </span>
+                    </div>
+                    
+                    <!-- Loading -->
+                    <div id="loading" class="loading">
+                        <div class="spinner"></div>
+                        <p>Cargando productos...</p>
+                    </div>
+                    
+                    <!-- Grid -->
+                    <div id="productos-grid" class="products-grid">
+                        <!-- Se llena con JavaScript -->
+                    </div>
+                    
+                    <!-- Paginación -->
+                    <div id="paginacion" class="paginacion">
+                        <!-- Se llena con JavaScript -->
+                    </div>
+                    
+                    <!-- Sin resultados -->
+                    <div id="sin-resultados" class="sin-resultados" style="display: none;">
+                        <p>😕 No se encontraron productos</p>
+                        <button onclick="location.reload()" class="btn btn-primary">
+                            Ver todos los productos
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 E-commerce TUC. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/carrito.js"></script>
+    <script src="js/productos.js"></script>
+    <script src="js/auth-helper.js"></script>
+    <script src="js/auth-header.js"></script>
+</body>
+</html>

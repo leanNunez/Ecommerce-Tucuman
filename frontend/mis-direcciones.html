@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Direcciones - E-commerce Tucumán</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/user-dropdown.css">
+    <link rel="stylesheet" href="css/mis-direcciones.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <h1>🛒 E-commerce TUC</h1>
+                </a>
+                <nav class="nav">
+                    <a href="productos.html">Productos</a>
+                    <a href="carrito.html" class="cart-link">
+                        🛒 Carrito
+                        <span id="cart-count" class="cart-badge">0</span>
+                    </a>
+                    <a href="login.html" id="auth-link">👤 Iniciar Sesión</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="index.html">Inicio</a> / <span>Mis Direcciones</span>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="direcciones-container">
+        <div class="direcciones-layout">
+            <!-- Sidebar -->
+            <aside class="perfil-sidebar">
+                <div class="perfil-avatar" id="sidebar-avatar">JD</div>
+                <div class="perfil-user-info">
+                    <h2 id="sidebar-nombre">Cargando...</h2>
+                    <p id="sidebar-email">...</p>
+                </div>
+                
+                <ul class="perfil-menu">
+                    <li><a href="perfil.html">👤 Mi Perfil</a></li>
+                    <li><a href="mis-pedidos.html">📦 Mis Pedidos</a></li>
+                    <li><a href="mis-direcciones.html" class="active">📍 Direcciones</a></li>
+                    <li><a href="favoritos.html">❤️ Favoritos</a></li>
+                </ul>
+            </aside>
+
+            <!-- Content -->
+            <main class="direcciones-content">
+                <div class="direcciones-header">
+                    <h1>Mis Direcciones</h1>
+                    <button class="btn btn-primary" onclick="abrirModal()">
+                        + Nueva Dirección
+                    </button>
+                </div>
+
+                <div id="direcciones-lista" class="direcciones-grid">
+                    <!-- Se llena con JavaScript -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal Agregar/Editar Dirección -->
+    <div id="modal-direccion" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-titulo">Nueva Dirección</h2>
+                <button class="btn-close" onclick="cerrarModal()">×</button>
+            </div>
+
+            <form id="form-direccion">
+                <input type="hidden" id="direccion-id">
+                
+                <div class="form-group">
+                    <label for="titulo">Título de la dirección *</label>
+                    <input type="text" id="titulo" placeholder="Ej: Casa, Trabajo, Casa de mamá" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="destinatario">Nombre del destinatario *</label>
+                    <input type="text" id="destinatario" placeholder="Nombre completo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="calle">Calle y número *</label>
+                    <input type="text" id="calle" placeholder="Av. Aconquija 1234" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="barrio">Barrio/Localidad</label>
+                    <input type="text" id="barrio" placeholder="Yerba Buena">
+                </div>
+
+                <div class="form-group">
+                    <label for="ciudad">Ciudad *</label>
+                    <input type="text" id="ciudad" value="San Miguel de Tucumán" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="provincia">Provincia *</label>
+                    <input type="text" id="provincia" value="Tucumán" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="codigo_postal">Código Postal</label>
+                    <input type="text" id="codigo_postal" placeholder="T4000">
+                </div>
+
+                <div class="form-group">
+                    <label for="telefono">Teléfono de contacto *</label>
+                    <input type="tel" id="telefono" placeholder="381-1234567" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="referencia">Referencias adicionales</label>
+                    <input type="text" id="referencia" placeholder="Casa blanca con portón negro">
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="predeterminada">
+                    <label for="predeterminada" style="margin: 0;">Establecer como dirección predeterminada</label>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        💾 Guardar
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="cerrarModal()">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 E-commerce TUC. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/carrito.js"></script>
+    <script src="js/auth-header.js"></script>
+    <script>
+        // Verificar autenticación
+        const token = localStorage.getItem('token');
+        const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+        
+        if (!token) {
+            window.location.href = 'login.html';
+        }
+
+        // Array de direcciones (simulado - en producción vendría del backend)
+        let direcciones = JSON.parse(localStorage.getItem('direcciones') || '[]');
+
+        // Cargar datos
+        document.addEventListener('DOMContentLoaded', () => {
+            // Actualizar sidebar
+            document.getElementById('sidebar-nombre').textContent = usuario.nombre || 'Usuario';
+            document.getElementById('sidebar-email').textContent = usuario.email || '';
+            
+            const iniciales = obtenerIniciales(usuario.nombre);
+            document.getElementById('sidebar-avatar').textContent = iniciales;
+            
+            // Cargar direcciones
+            renderizarDirecciones();
+        });
+
+        function renderizarDirecciones() {
+            const container = document.getElementById('direcciones-lista');
+            
+            if (direcciones.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <div class="empty-state-icon">📍</div>
+                        <h3>No tienes direcciones guardadas</h3>
+                        <p>Agrega una dirección para facilitar tus compras</p>
+                        <button class="btn btn-primary" onclick="abrirModal()">
+                            + Agregar Dirección
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = direcciones.map((dir, index) => `
+                <div class="direccion-card ${dir.predeterminada ? 'predeterminada' : ''}">
+                    ${dir.predeterminada ? '<span class="direccion-badge">✓ Predeterminada</span>' : ''}
+                    <div class="direccion-titulo">${dir.titulo}</div>
+                    <div class="direccion-destinatario">${dir.destinatario}</div>
+                    <div class="direccion-detalle">
+                        ${dir.calle}<br>
+                        ${dir.barrio ? dir.barrio + '<br>' : ''}
+                        ${dir.ciudad}, ${dir.provincia}<br>
+                        ${dir.codigo_postal ? 'CP: ' + dir.codigo_postal : ''}
+                        ${dir.referencia ? '<br><small>' + dir.referencia + '</small>' : ''}
+                    </div>
+                    <div class="direccion-telefono">
+                        📞 ${dir.telefono}
+                    </div>
+                    <div class="direccion-acciones">
+                        ${!dir.predeterminada ? `
+                            <button class="btn-sm btn-predeterminada" onclick="setPredeterminada(${index})">
+                                ⭐ Predeterminada
+                            </button>
+                        ` : ''}
+                        <button class="btn-sm btn-editar" onclick="editarDireccion(${index})">
+                            ✏️ Editar
+                        </button>
+                        <button class="btn-sm btn-eliminar" onclick="eliminarDireccion(${index})">
+                            🗑️ Eliminar
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function abrirModal(index = null) {
+            const modal = document.getElementById('modal-direccion');
+            const form = document.getElementById('form-direccion');
+            
+            form.reset();
+            
+            if (index !== null) {
+                // Editar
+                const dir = direcciones[index];
+                document.getElementById('modal-titulo').textContent = 'Editar Dirección';
+                document.getElementById('direccion-id').value = index;
+                document.getElementById('titulo').value = dir.titulo;
+                document.getElementById('destinatario').value = dir.destinatario;
+                document.getElementById('calle').value = dir.calle;
+                document.getElementById('barrio').value = dir.barrio || '';
+                document.getElementById('ciudad').value = dir.ciudad;
+                document.getElementById('provincia').value = dir.provincia;
+                document.getElementById('codigo_postal').value = dir.codigo_postal || '';
+                document.getElementById('telefono').value = dir.telefono;
+                document.getElementById('referencia').value = dir.referencia || '';
+                document.getElementById('predeterminada').checked = dir.predeterminada;
+            } else {
+                // Nueva
+                document.getElementById('modal-titulo').textContent = 'Nueva Dirección';
+                document.getElementById('direccion-id').value = '';
+            }
+            
+            modal.classList.add('show');
+        }
+
+        function cerrarModal() {
+            document.getElementById('modal-direccion').classList.remove('show');
+        }
+
+        function editarDireccion(index) {
+            abrirModal(index);
+        }
+
+        function eliminarDireccion(index) {
+            if (confirm('¿Eliminar esta dirección?')) {
+                direcciones.splice(index, 1);
+                localStorage.setItem('direcciones', JSON.stringify(direcciones));
+                renderizarDirecciones();
+            }
+        }
+
+        function setPredeterminada(index) {
+            direcciones.forEach((dir, i) => {
+                dir.predeterminada = i === index;
+            });
+            localStorage.setItem('direcciones', JSON.stringify(direcciones));
+            renderizarDirecciones();
+        }
+
+        // Guardar dirección
+        document.getElementById('form-direccion').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const index = document.getElementById('direccion-id').value;
+            const esPredeterminada = document.getElementById('predeterminada').checked;
+            
+            const direccion = {
+                titulo: document.getElementById('titulo').value,
+                destinatario: document.getElementById('destinatario').value,
+                calle: document.getElementById('calle').value,
+                barrio: document.getElementById('barrio').value,
+                ciudad: document.getElementById('ciudad').value,
+                provincia: document.getElementById('provincia').value,
+                codigo_postal: document.getElementById('codigo_postal').value,
+                telefono: document.getElementById('telefono').value,
+                referencia: document.getElementById('referencia').value,
+                predeterminada: esPredeterminada
+            };
+            
+            if (index !== '') {
+                // Actualizar
+                direcciones[index] = direccion;
+            } else {
+                // Nueva
+                if (esPredeterminada) {
+                    direcciones.forEach(dir => dir.predeterminada = false);
+                }
+                direcciones.push(direccion);
+            }
+            
+            localStorage.setItem('direcciones', JSON.stringify(direcciones));
+            renderizarDirecciones();
+            cerrarModal();
+        });
+
+        // Cerrar modal al hacer click fuera
+        document.getElementById('modal-direccion').addEventListener('click', (e) => {
+            if (e.target.id === 'modal-direccion') {
+                cerrarModal();
+            }
+        });
+
+        function obtenerIniciales(nombre) {
+            if (!nombre) return '?';
+            const palabras = nombre.trim().split(' ');
+            if (palabras.length === 1) return palabras[0].charAt(0).toUpperCase();
+            return (palabras[0].charAt(0) + palabras[palabras.length - 1].charAt(0)).toUpperCase();
+        }
+    </script>
+</body>
+</html>

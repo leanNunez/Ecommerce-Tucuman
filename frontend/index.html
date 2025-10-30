@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Tucumán - Inicio</title>
+    <meta name="description" content="Tu tienda online en Tucumán con los mejores productos">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/user-dropdown.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <!-- Logo -->
+                <a href="index.html" class="logo">
+                    <h1>🛒 E-commerce TUC</h1>
+                </a>
+                
+                <!-- Búsqueda -->
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Buscar productos...">
+                    <button id="search-btn" class="btn-search">🔍</button>
+                </div>
+                
+                <!-- Navegación -->
+                <nav class="nav">
+                    <a href="productos.html">Productos</a>
+                    <a href="carrito.html" class="cart-link">
+                        🛒 Carrito
+                        <span id="cart-count" class="cart-badge">0</span>
+                    </a>
+                    <a href="login.html" id="auth-link">👤 Iniciar Sesión</a>
+                    <a href="registro.html" class="btn-registro-nav">📝 Registrarse</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Bienvenido a tu tienda online</h2>
+                <p>Encuentra los mejores productos al mejor precio</p>
+                <a href="productos.html" class="btn btn-primary btn-large">Ver productos</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categorías -->
+    <section class="categories-section">
+        <div class="container">
+            <h2 class="section-title">Categorías</h2>
+            <div id="categories-grid" class="categories-grid">
+                <!-- Se llenan con JavaScript -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Cargando categorías...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Productos Destacados -->
+    <section class="featured-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Productos Destacados</h2>
+                <a href="productos.html" class="btn btn-secondary">Ver todos</a>
+            </div>
+            <div id="featured-products" class="products-grid">
+                <!-- Se llenan con JavaScript -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Cargando productos...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Beneficios -->
+    <section class="benefits-section">
+        <div class="container">
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">🚚</div>
+                    <h3>Envío Gratis</h3>
+                    <p>En compras superiores a $50.000</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">💳</div>
+                    <h3>Pagos Seguros</h3>
+                    <p>Múltiples métodos de pago</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🔄</div>
+                    <h3>Devoluciones</h3>
+                    <p>30 días para devolver tu compra</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">💬</div>
+                    <h3>Atención 24/7</h3>
+                    <p>Estamos para ayudarte</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>E-commerce TUC</h3>
+                    <p>Tu tienda online de confianza en Tucumán</p>
+                    <div class="social-links">
+                        <a href="#" title="Facebook">📘</a>
+                        <a href="#" title="Instagram">📷</a>
+                        <a href="#" title="WhatsApp">💬</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul>
+                        <li><a href="productos.html">Productos</a></li>
+                        <li><a href="#categorias">Categorías</a></li>
+                        <li><a href="#">Sobre Nosotros</a></li>
+                        <li><a href="#">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Información</h4>
+                    <ul>
+                        <li><a href="#">Términos y Condiciones</a></li>
+                        <li><a href="#">Política de Privacidad</a></li>
+                        <li><a href="#">Preguntas Frecuentes</a></li>
+                        <li><a href="#">Envíos</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <ul class="contact-info">
+                        <li>📍 San Miguel de Tucumán</li>
+                        <li>📧 info@ecommerce-tuc.com</li>
+                        <li>📱 +54 381 123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 E-commerce TUC. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/carrito.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/auth-helper.js"></script>
+    <script src="js/auth-header.js"></script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Favoritos - E-commerce Tucumán</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/user-dropdown.css">
+    <link rel="stylesheet" href="css/favoritos.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <h1>🛒 E-commerce TUC</h1>
+                </a>
+                <nav class="nav">
+                    <a href="productos.html">Productos</a>
+                    <a href="carrito.html" class="cart-link">
+                        🛒 Carrito
+                        <span id="cart-count" class="cart-badge">0</span>
+                    </a>
+                    <a href="login.html" id="auth-link">👤 Iniciar Sesión</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="index.html">Inicio</a> / <span>Mis Favoritos</span>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="favoritos-container">
+        <div class="favoritos-layout">
+            <!-- Sidebar -->
+            <aside class="perfil-sidebar">
+                <div class="perfil-avatar" id="sidebar-avatar">JD</div>
+                <div class="perfil-user-info">
+                    <h2 id="sidebar-nombre">Cargando...</h2>
+                    <p id="sidebar-email">...</p>
+                </div>
+                
+                <ul class="perfil-menu">
+                    <li><a href="perfil.html">👤 Mi Perfil</a></li>
+                    <li><a href="mis-pedidos.html">📦 Mis Pedidos</a></li>
+                    <li><a href="mis-direcciones.html">📍 Direcciones</a></li>
+                    <li><a href="favoritos.html" class="active">❤️ Favoritos</a></li>
+                </ul>
+            </aside>
+
+            <!-- Content -->
+            <main class="favoritos-content">
+                <div class="favoritos-header">
+                    <div>
+                        <h1>Mis Favoritos</h1>
+                        <p class="favoritos-count" id="favoritos-count">0 productos guardados</p>
+                    </div>
+                </div>
+
+                <div id="favoritos-lista" class="favoritos-grid">
+                    <!-- Se llena con JavaScript -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 E-commerce TUC. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/carrito.js"></script>
+    <script src="js/auth-header.js"></script>
+    <script>
+        // Verificar autenticación
+        const token = localStorage.getItem('token');
+        const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+        
+        if (!token) {
+            window.location.href = 'login.html';
+        }
+
+        // Array de favoritos (simulado - en producción vendría del backend)
+        let favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+
+        // Cargar datos
+        document.addEventListener('DOMContentLoaded', () => {
+            // Actualizar sidebar
+            document.getElementById('sidebar-nombre').textContent = usuario.nombre || 'Usuario';
+            document.getElementById('sidebar-email').textContent = usuario.email || '';
+            
+            const iniciales = obtenerIniciales(usuario.nombre);
+            document.getElementById('sidebar-avatar').textContent = iniciales;
+            
+            // Cargar favoritos
+            renderizarFavoritos();
+        });
+
+        function renderizarFavoritos() {
+            const container = document.getElementById('favoritos-lista');
+            const countElement = document.getElementById('favoritos-count');
+            
+            countElement.textContent = `${favoritos.length} producto${favoritos.length !== 1 ? 's' : ''} guardado${favoritos.length !== 1 ? 's' : ''}`;
+            
+            if (favoritos.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <div class="empty-state-icon">❤️</div>
+                        <h3>No tienes favoritos aún</h3>
+                        <p>Guarda tus productos favoritos para encontrarlos fácilmente</p>
+                        <a href="productos.html" class="btn btn-primary">
+                            Explorar Productos
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = favoritos.map((producto, index) => {
+                const descuento = producto.descuento_porcentaje || 0;
+                const stockStatus = producto.stock > 10 ? 'disponible' : producto.stock > 0 ? 'bajo' : 'agotado';
+                const stockText = producto.stock > 10 ? 'Disponible' : producto.stock > 0 ? `Últimas ${producto.stock} unidades` : 'Sin stock';
+                
+                return `
+                    <div class="favorito-card">
+                        <div class="favorito-img-container">
+                            <img src="${producto.imagen_principal || 'img/placeholder.jpg'}" 
+                                 alt="${producto.nombre}"
+                                 class="favorito-img"
+                                 onerror="this.src='img/placeholder.jpg'">
+                            ${descuento > 0 ? `<span class="favorito-badge">-${descuento}%</span>` : ''}
+                            <button class="btn-quitar-favorito" onclick="quitarFavorito(${index})" title="Quitar de favoritos">
+                                💔
+                            </button>
+                        </div>
+                        <div class="favorito-info">
+                            <div class="favorito-categoria">${producto.categoria || 'Sin categoría'}</div>
+                            <h3 class="favorito-nombre">${producto.nombre}</h3>
+                            <div class="favorito-precio-container">
+                                <span class="favorito-precio">$${parseFloat(producto.precio).toLocaleString('es-AR', { minimumFractionDigits: 2 })}</span>
+                                ${producto.precio_anterior ? `
+                                    <span class="favorito-precio-anterior">$${parseFloat(producto.precio_anterior).toLocaleString('es-AR', { minimumFractionDigits: 2 })}</span>
+                                ` : ''}
+                            </div>
+                            <div class="favorito-stock stock-${stockStatus}">
+                                ${stockText}
+                            </div>
+                            <div class="favorito-acciones">
+                                <button class="btn btn-primary" onclick="agregarAlCarrito(${index})" ${producto.stock === 0 ? 'disabled' : ''}>
+                                    🛒 Agregar
+                                </button>
+                                <a href="producto-detalle.html?id=${producto.slug || producto.id}" class="btn btn-secondary">
+                                    👁️
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function quitarFavorito(index) {
+            const producto = favoritos[index];
+            
+            if (confirm(`¿Quitar "${producto.nombre}" de favoritos?`)) {
+                favoritos.splice(index, 1);
+                localStorage.setItem('favoritos', JSON.stringify(favoritos));
+                renderizarFavoritos();
+                
+                // Mostrar notificación
+                mostrarNotificacion('Producto eliminado de favoritos');
+            }
+        }
+
+        function agregarAlCarrito(index) {
+            const producto = favoritos[index];
+            carrito.agregar(producto);
+        }
+
+        function mostrarNotificacion(mensaje) {
+            const notif = document.createElement('div');
+            notif.className = 'notificacion';
+            notif.textContent = mensaje;
+            notif.style.cssText = `
+                position: fixed;
+                bottom: 2rem;
+                right: 2rem;
+                background: #1f2937;
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+                z-index: 9999;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            document.body.appendChild(notif);
+            
+            setTimeout(() => {
+                notif.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notif.remove(), 300);
+            }, 3000);
+        }
+
+        function obtenerIniciales(nombre) {
+            if (!nombre) return '?';
+            const palabras = nombre.trim().split(' ');
+            if (palabras.length === 1) return palabras[0].charAt(0).toUpperCase();
+            return (palabras[0].charAt(0) + palabras[palabras.length - 1].charAt(0)).toUpperCase();
+        }
+
+        // Agregar estilos de animación
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            @keyframes slideOut {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
