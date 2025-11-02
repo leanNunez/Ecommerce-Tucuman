@@ -385,11 +385,11 @@ in the Software without restriction...
 
 ## 👨‍💻 Autor
 
-**Tu Nombre**
+**Leandro Nuñez**
 
 - 📧 Email: leandro_castillero@hotmail.es
-- 💼 LinkedIn: [Tu Perfil](hhttps://github.com/leanNunez)
-- 🐙 GitHub: [@tu-usuario](www.linkedin.com/in/lean-nunez)
+- 💼 LinkedIn: [Leandro Nuñez](https://www.linkedin.com/in/lean-nunez)
+- 🐙 GitHub: [@leanNunez](https://github.com/leanNunez)
 
 ---
 
