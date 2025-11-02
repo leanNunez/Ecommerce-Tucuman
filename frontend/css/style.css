@@ -1,5 +1,5 @@
 /* ===========================
-   VARIABLES Y RESET
+    VARIABLES Y RESET
    =========================== */
 
 :root {
@@ -89,7 +89,7 @@ button {
 }
 
 /* ===========================
-   UTILIDADES
+    UTILIDADES
    =========================== */
 
 .container {
@@ -165,7 +165,7 @@ button {
 }
 
 /* ===========================
-   HEADER
+    HEADER
    =========================== */
 
 .header {
@@ -267,7 +267,7 @@ button {
 }
 
 /* ===========================
-   HERO SECTION
+    HERO SECTION
    =========================== */
 
 .hero {
@@ -290,7 +290,7 @@ button {
 }
 
 /* ===========================
-   SECCIONES
+    SECCIONES
    =========================== */
 
 .categories-section,
@@ -314,8 +314,8 @@ button {
 }
 
 /* ===========================
-   CATEGORÍAS
-   =========================== */
+    CATEGORÍAS
+=========================== */
 
 .categories-grid {
     display: grid;
@@ -355,7 +355,7 @@ button {
 }
 
 /* ===========================
-   PRODUCTOS
+    PRODUCTOS
    =========================== */
 
 .products-grid {
@@ -491,7 +491,7 @@ button {
 }
 
 /* ===========================
-   BENEFICIOS
+    BENEFICIOS
    =========================== */
 
 .benefits-grid {
@@ -524,7 +524,7 @@ button {
 }
 
 /* ===========================
-   FOOTER
+    FOOTER
    =========================== */
 
 .footer {
@@ -581,7 +581,7 @@ button {
 }
 
 /* ===========================
-   BREADCRUMB
+    BREADCRUMB
    =========================== */
 
 .breadcrumb {
@@ -600,7 +600,7 @@ button {
 }
 
 /* ===========================
-   NOTIFICACIÓN
+    NOTIFICACIÓN
    =========================== */
 
 .notificacion {
@@ -624,7 +624,7 @@ button {
 }
 
 /* ===========================
-   LOADING
+    LOADING
    =========================== */
 
 .loading {
@@ -648,7 +648,7 @@ button {
 }
 
 /* ===========================
-   RESPONSIVE
+    RESPONSIVE
    =========================== */
 
 @media (max-width: 768px) {
@@ -675,7 +675,7 @@ button {
         font-size: 1.5rem;
     }
     /* ============================================
-   PÁGINA DE DETALLE DEL PRODUCTO
+    PÁGINA DE DETALLE DEL PRODUCTO
    ============================================ */
 
 .producto-detalle-page {

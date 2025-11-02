@@ -1,5 +1,5 @@
 /* ===========================
-   PÁGINA DE PRODUCTOS
+    PÁGINA DE PRODUCTOS
    =========================== */
 
 .productos-page {
@@ -14,7 +14,7 @@
 }
 
 /* ===========================
-   SIDEBAR DE FILTROS
+    SIDEBAR DE FILTROS
    =========================== */
 
 .filtros-sidebar {
@@ -90,7 +90,7 @@
 }
 
 /* ===========================
-   CONTENIDO DE PRODUCTOS
+    CONTENIDO DE PRODUCTOS
    =========================== */
 
 .productos-content {
@@ -121,7 +121,7 @@
 }
 
 /* ===========================
-   SIN RESULTADOS
+    SIN RESULTADOS
    =========================== */
 
 .sin-resultados {
@@ -139,7 +139,7 @@
 }
 
 /* ===========================
-   PAGINACIÓN
+    PAGINACIÓN
    =========================== */
 
 .paginacion {
@@ -182,7 +182,7 @@
 }
 
 /* ===========================
-   CARRITO
+    CARRITO
    =========================== */
 
 .carrito-page {
@@ -322,7 +322,7 @@
 }
 
 /* ===========================
-   RESUMEN DEL CARRITO
+    RESUMEN DEL CARRITO
    =========================== */
 
 .carrito-resumen {
@@ -372,7 +372,7 @@
 }
 
 /* ===========================
-   CHECKOUT
+    CHECKOUT
    =========================== */
 
 .checkout-page {
@@ -523,7 +523,7 @@
 }
 
 /* ===========================
-   CHECKOUT RESUMEN
+    CHECKOUT RESUMEN
    =========================== */
 
 .checkout-summary {
@@ -608,7 +608,7 @@
 }
 
 /* ===========================
-   MODAL
+    MODAL
    =========================== */
 
 .modal {
@@ -704,7 +704,7 @@
 }
 
 /* ===========================
-   RESPONSIVE - PRODUCTOS
+    RESPONSIVE - PRODUCTOS
    =========================== */
 
 @media (max-width: 992px) {

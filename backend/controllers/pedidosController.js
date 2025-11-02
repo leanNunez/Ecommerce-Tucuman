@@ -18,8 +18,13 @@ const generarNumeroPedido = () => {
 /**
  * Crear nuevo pedido
  */
+ // backend/controllers/pedidosController.js
+
 export const crearPedido = async (req, res) => {
     try {
+                console.log('=====================================');
+        console.log('📦 BODY RECIBIDO:', JSON.stringify(req.body, null, 2));
+        console.log('=====================================');
         const {
             nombre_cliente,
             email,
@@ -29,8 +34,12 @@ export const crearPedido = async (req, res) => {
             codigo_postal,
             items,
             metodo_pago,
-            notas
+            notas,
+            total
         } = req.body;
+        
+        // Helper para convertir undefined a null
+        const sanitize = (value) => value === undefined || value === '' ? null : value;
         
         // Validaciones básicas
         if (!nombre_cliente || !email || !telefono || !direccion || !items || items.length === 0) {
@@ -55,13 +64,14 @@ export const crearPedido = async (req, res) => {
             // 1. Verificar stock y calcular total
             let subtotal = 0;
             const itemsValidados = [];
+
             
             for (const item of items) {
-                const [producto] = await connection.execute(
+                const [productos] = await connection.execute(
                     'SELECT id, nombre, precio, stock, imagen_principal FROM productos WHERE id = ? AND activo = 1',
                     [item.producto_id]
                 );
-                
+                const producto = productos[0];
                 if (!producto) {
                     throw new Error(`Producto con ID ${item.producto_id} no encontrado`);
                 }
@@ -76,7 +86,7 @@ export const crearPedido = async (req, res) => {
                 itemsValidados.push({
                     producto_id: producto.id,
                     nombre_producto: producto.nombre,
-                    imagen_producto: producto.imagen_principal,
+                    imagen_producto: producto.imagen_principal || null,
                     precio_unitario: producto.precio,
                     cantidad: item.cantidad,
                     subtotal: subtotalItem
@@ -85,9 +95,9 @@ export const crearPedido = async (req, res) => {
             
             // 2. Calcular envío
             const envio = subtotal > 50000 ? 0 : 5000;
-            const total = subtotal + envio;
+            const totalCalculado = subtotal + envio;
             
-            // 3. Insertar pedido
+            // 3. Insertar pedido - SANITIZAR TODOS LOS VALORES
             const numeroPedido = generarNumeroPedido();
             
             const [resultPedido] = await connection.execute(`
@@ -98,17 +108,17 @@ export const crearPedido = async (req, res) => {
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             `, [
                 numeroPedido,
-                nombre_cliente,
-                email,
-                telefono,
-                direccion,
-                ciudad || 'Tucumán',
-                codigo_postal || null,
+                sanitize(nombre_cliente),
+                sanitize(email),
+                sanitize(telefono),
+                sanitize(direccion),
+                sanitize(ciudad) || 'Tucumán',
+                sanitize(codigo_postal),
                 subtotal,
                 envio,
-                total,
-                metodo_pago || 'efectivo',
-                notas || null
+                totalCalculado,
+                sanitize(metodo_pago) || 'efectivo',
+                sanitize(notas)
             ]);
             
             const pedidoId = resultPedido.insertId;
@@ -124,8 +134,8 @@ export const crearPedido = async (req, res) => {
                 `, [
                     pedidoId,
                     item.producto_id,
-                    item.nombre_producto,
-                    item.imagen_producto,
+                    sanitize(item.nombre_producto),
+                    sanitize(item.imagen_producto) || null,
                     item.precio_unitario,
                     item.cantidad,
                     item.subtotal

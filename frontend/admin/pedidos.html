@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Pedidos - Panel Admin</title>
+    <link rel="stylesheet" href="../css/admin-dashboard.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>🛒 E-commerce</h2>
+                <div class="sidebar-user">
+                    <span id="user-name">Cargando...</span><br>
+                    <small id="user-email"></small>
+                </div>
+            </div>
+
+            <ul class="sidebar-nav">
+                <li><a href="index.html">📊 Dashboard</a></li>
+                <li><a href="productos.html">📦 Productos</a></li>
+                <li><a href="pedidos.html" class="active">🛒 Pedidos</a></li>
+                <li><a href="clientes.html">👥 Clientes</a></li>
+                <li><a href="categorias.html">📂 Categorías</a></li>
+                <li><a href="perfil.html">👤 Mi Perfil</a></li>
+                <li><a href="../index.html">🏪 Ver Tienda</a></li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="cerrarSesion()">
+                    🚪 Cerrar Sesión
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1>Gestión de Pedidos</h1>
+                <div class="breadcrumb">Panel de Administración / Pedidos</div>
+            </div>
+
+            <div style="text-align: center; padding: 4rem 2rem;">
+                <div style="font-size: 5rem; margin-bottom: 2rem;">🛒</div>
+                <h2 style="color: #1f2937; margin-bottom: 1rem;">Gestión de Pedidos</h2>
+                <p style="color: #6b7280; margin-bottom: 2rem;">
+                    Esta funcionalidad estará disponible próximamente.<br>
+                    Aquí podrás ver y gestionar todos los pedidos de los clientes.
+                </p>
+                <a href="index.html" class="btn-primary" style="padding: 0.75rem 2rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; display: inline-block;">
+                    ← Volver al Dashboard
+                </a>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+            
+            if (!token || usuario.tipo !== 'admin') {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            document.getElementById('user-name').textContent = usuario.nombre || 'Usuario';
+            document.getElementById('user-email').textContent = usuario.email || '';
+        });
+
+        function cerrarSesion() {
+            if (confirm('¿Cerrar sesión?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('usuario');
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout - E-commerce Tucumán</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/checkout.css">
 </head>
 <body>
     <!-- Header Simplificado -->
@@ -48,7 +49,7 @@
                                 <div class="form-group">
                                     <label for="telefono">Teléfono *</label>
                                     <input type="tel" id="telefono" name="telefono" 
-                                           placeholder="+54 381 123-4567" required>
+                                        placeholder="+54 381 123-4567" required>
                                 </div>
                             </div>
                         </div>
@@ -59,14 +60,14 @@
                             <div class="form-group">
                                 <label for="direccion">Dirección *</label>
                                 <input type="text" id="direccion" name="direccion" 
-                                       placeholder="Calle y número" required>
+                                    placeholder="Calle y número" required>
                             </div>
                             
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="ciudad">Ciudad *</label>
                                     <input type="text" id="ciudad" name="ciudad" 
-                                           value="Tucumán" required>
+                                        value="Tucumán" required>
                                 </div>
                                 
                                 <div class="form-group">
@@ -120,7 +121,7 @@
                             <div class="form-group">
                                 <label for="notas">Comentarios adicionales</label>
                                 <textarea id="notas" name="notas" rows="4" 
-                                          placeholder="Ej: Timbre roto, tocar puerta"></textarea>
+                                        placeholder="Ej: Timbre roto, tocar puerta"></textarea>
                             </div>
                         </div>
                         
@@ -200,7 +201,7 @@
     <!-- Scripts -->
     <script src="js/api.js"></script>
     <script src="js/carrito.js"></script>
-    <script src="js/auth-helper.js"></script>
+    <script src="js/auth-header.js"></script>
     <script>
         // Cargar resumen del carrito
         window.addEventListener('DOMContentLoaded', () => {
@@ -245,27 +246,36 @@
             btnFinalizar.disabled = true;
             btnFinalizar.textContent = 'Procesando...';
             
-            // Obtener datos del formulario
-            const formData = new FormData(e.target);
-            const items = carrito.obtenerItems();
-            
-            const pedido = {
-                nombre_cliente: formData.get('nombre'),
-                email: formData.get('email'),
-                telefono: formData.get('telefono'),
-                direccion: formData.get('direccion'),
-                ciudad: formData.get('ciudad'),
-                codigo_postal: formData.get('codigo_postal'),
-                metodo_pago: formData.get('metodo_pago'),
-                notas: formData.get('notas'),
-                items: items.map(item => ({
-                    producto_id: item.id,
-                    cantidad: item.cantidad
-                })),
-                total: carrito.calcularTotal() + (carrito.calcularTotal() > 50000 ? 0 : 5000)
-            };
-            
             try {
+                // Obtener datos del formulario
+                const formData = new FormData(e.target);
+                const items = carrito.obtenerItems();
+                
+                // Helper para asegurar que no haya undefined
+                const getValue = (key) => {
+                    const value = formData.get(key);
+                    // Convertir undefined, null o string vacío a null
+                    return (value === undefined || value === null || value === '') ? null : value;
+                };
+                
+                const pedido = {
+                    nombre_cliente: getValue('nombre'),
+                    email: getValue('email'),
+                    telefono: getValue('telefono'),
+                    direccion: getValue('direccion'),
+                    ciudad: getValue('ciudad'),
+                    codigo_postal: getValue('codigo_postal'),
+                    metodo_pago: getValue('metodo_pago'),
+                    notas: getValue('notas'),
+                    items: items.map(item => ({
+                        producto_id: item.id,
+                        cantidad: item.cantidad
+                    })),
+                    total: carrito.calcularTotal() + (carrito.calcularTotal() > 50000 ? 0 : 5000)
+                };
+                
+                console.log('Pedido a enviar:', pedido);
+            
                 const response = await API.post('/pedidos', pedido);
                 
                 if (response.success) {
@@ -283,10 +293,15 @@
                     // Vaciar carrito
                     carrito.vaciar();
                 } else {
-                    throw new Error(response.error);
+                    throw new Error(response.error || 'Error al procesar el pedido');
                 }
                 
             } catch (error) {
+                console.error('Error completo:', error);
+                console.error('Tipo de error:', typeof error);
+                console.error('Mensaje:', error.message);
+                console.error('Stack:', error.stack);
+                
                 alert('Error al procesar el pedido: ' + error.message);
                 btnFinalizar.disabled = false;
                 btnFinalizar.textContent = 'Confirmar Pedido';

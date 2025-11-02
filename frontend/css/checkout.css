@@ -1,0 +1,364 @@
+/* ============================================
+   CHECKOUT - FINALIZAR COMPRA - ESTILOS
+   ============================================ */
+
+.checkout-page {
+    padding: 2rem 0 4rem;
+    min-height: calc(100vh - 300px);
+}
+
+.checkout-page h1 {
+    font-size: 2rem;
+    color: #1f2937;
+    margin-bottom: 2rem;
+}
+
+/* Layout del checkout */
+.checkout-layout {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+/* Pasos en el header */
+.checkout-steps {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.checkout-steps .step {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    background: #e5e7eb;
+    color: #6b7280;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.checkout-steps .step.active {
+    background: #3b82f6;
+    color: white;
+}
+
+/* Formulario */
+.checkout-form-container {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.checkout-form .form-section {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.checkout-form .form-section:last-of-type {
+    border-bottom: none;
+}
+
+.checkout-form .form-section h2 {
+    font-size: 1.25rem;
+    color: #1f2937;
+    margin-bottom: 1.5rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #374151;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+/* Métodos de pago */
+.payment-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.payment-method {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.payment-method:hover {
+    border-color: #3b82f6;
+    background: #f9fafb;
+}
+
+.payment-method input[type="radio"] {
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.payment-method input[type="radio"]:checked ~ .method-content {
+    color: #1f2937;
+}
+
+.payment-method:has(input[type="radio"]:checked) {
+    border-color: #3b82f6;
+    background: #eff6ff;
+}
+
+.method-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+.method-icon {
+    font-size: 2rem;
+}
+
+.method-content strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: #1f2937;
+}
+
+.method-content p {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0;
+}
+
+/* Acciones del formulario */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    justify-content: space-between;
+}
+
+.form-actions .btn {
+    padding: 0.875rem 2rem;
+}
+
+/* Resumen del checkout */
+.checkout-summary {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+    position: sticky;
+    top: 2rem;
+}
+
+.checkout-summary h3 {
+    font-size: 1.5rem;
+    color: #1f2937;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.checkout-items {
+    max-height: 350px;
+    overflow-y: auto;
+    margin-bottom: 1.5rem;
+}
+
+.checkout-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.checkout-item:last-child {
+    border-bottom: none;
+}
+
+.checkout-item img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.item-details {
+    flex: 1;
+}
+
+.item-details h4 {
+    font-size: 0.95rem;
+    color: #1f2937;
+    margin-bottom: 0.25rem;
+}
+
+.item-details p {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.item-price {
+    font-weight: 700;
+    color: #3b82f6;
+    font-size: 1rem;
+}
+
+/* Totales del resumen */
+.summary-totals {
+    border-top: 2px solid #e5e7eb;
+    padding-top: 1rem;
+}
+
+.summary-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    color: #6b7280;
+}
+
+.summary-line.total {
+    border-top: 2px solid #e5e7eb;
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    font-size: 1.25rem;
+    color: #1f2937;
+}
+
+/* Modal de confirmación */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    padding: 30px;
+    text-align: center;
+    background: #10b981;
+    color: white;
+    border-radius: 12px 12px 0 0;
+}
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+    background: white;
+    color: #10b981;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    margin: 0 auto 15px;
+    font-weight: bold;
+}
+
+.modal-body {
+    padding: 30px;
+    text-align: center;
+}
+
+.modal-body p {
+    margin: 10px 0;
+    color: #374151;
+}
+
+.info-box {
+    background: #f0f9ff;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #3b82f6;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.modal-footer {
+    padding: 20px 30px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    border-top: 1px solid #e5e7eb;
+}
+
+.btn-success {
+    background: #25d366;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+}
+
+.btn-success:hover {
+    background: #1fb855;
+}

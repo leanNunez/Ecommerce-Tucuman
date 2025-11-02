@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - Panel Admin</title>
+    <link rel="stylesheet" href="../css/admin-dashboard.css">
+    <link rel="stylesheet" href="../css/admin-perfil.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>🛒 E-commerce</h2>
+                <div class="sidebar-user">
+                    <span id="user-name">Cargando...</span><br>
+                    <small id="user-email"></small>
+                </div>
+            </div>
+
+            <ul class="sidebar-nav">
+                <li><a href="index.html">📊 Dashboard</a></li>
+                <li><a href="productos.html">📦 Productos</a></li>
+                <li><a href="pedidos.html">🛒 Pedidos</a></li>
+                <li><a href="clientes.html">👥 Clientes</a></li>
+                <li><a href="categorias.html">📂 Categorías</a></li>
+                <li><a href="perfil.html" class="active">👤 Mi Perfil</a></li>
+                <li><a href="../index.html">🏪 Ver Tienda</a></li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="cerrarSesion()">
+                    🚪 Cerrar Sesión
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1>Mi Perfil</h1>
+                <div class="breadcrumb">Panel de Administración / Mi Perfil</div>
+            </div>
+
+            <!-- Stats rápidas -->
+            <div class="stats-admin">
+                <div class="stat-admin-card">
+                    <div class="stat-admin-icon">📅</div>
+                    <div class="stat-admin-value" id="dias-activo">0</div>
+                    <div class="stat-admin-label">Días como Admin</div>
+                </div>
+                <div class="stat-admin-card">
+                    <div class="stat-admin-icon">⏰</div>
+                    <div class="stat-admin-value" id="ultimo-acceso">Hoy</div>
+                    <div class="stat-admin-label">Último Acceso</div>
+                </div>
+                <div class="stat-admin-card">
+                    <div class="stat-admin-icon">🔐</div>
+                    <div class="stat-admin-value">Admin</div>
+                    <div class="stat-admin-label">Rol del Sistema</div>
+                </div>
+            </div>
+
+            <div class="perfil-admin-content">
+                <!-- Header del perfil -->
+                <div class="perfil-header">
+                    <div class="perfil-avatar-grande" id="avatar-grande">A</div>
+                    <div class="perfil-info-principal">
+                        <span class="perfil-badge">🛡️ Administrador</span>
+                        <h1 id="perfil-nombre">Administrador</h1>
+                        <p class="perfil-email" id="perfil-email">admin@example.com</p>
+                    </div>
+                </div>
+
+                <div id="alert" class="alert"></div>
+
+                <!-- Formulario de información personal -->
+                <form id="form-perfil">
+                    <div class="form-section">
+                        <h3>📝 Información Personal</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="nombre">Nombre Completo *</label>
+                                <input type="text" id="nombre" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="telefono">Teléfono</label>
+                                <input type="tel" id="telefono" placeholder="381-1234567">
+                            </div>
+                            <div class="form-group">
+                                <label for="ciudad">Ciudad</label>
+                                <input type="text" id="ciudad" value="San Miguel de Tucumán">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>📍 Información de Contacto</h3>
+                        <div class="form-grid">
+                            <div class="form-group form-group-full">
+                                <label for="direccion">Dirección</label>
+                                <input type="text" id="direccion" placeholder="Calle, número">
+                            </div>
+                            <div class="form-group">
+                                <label for="codigo_postal">Código Postal</label>
+                                <input type="text" id="codigo_postal" placeholder="T4000">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary">
+                            💾 Guardar Cambios
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="location.reload()">
+                            ↺ Cancelar
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Cambiar contraseña -->
+                <div class="form-section password-section" style="margin-top: 3rem;">
+                    <h3>🔐 Cambiar Contraseña</h3>
+                    <p style="color: #9a3412; margin-bottom: 1.5rem;">
+                        Por seguridad, actualiza tu contraseña regularmente.
+                    </p>
+                    <form id="form-password">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="password-actual">Contraseña Actual *</label>
+                                <input type="password" id="password-actual">
+                            </div>
+                            <div class="form-group">
+                                <label for="password-nueva">Nueva Contraseña *</label>
+                                <input type="password" id="password-nueva" minlength="6">
+                            </div>
+                            <div class="form-group form-group-full">
+                                <label for="password-confirmar">Confirmar Nueva Contraseña *</label>
+                                <input type="password" id="password-confirmar" minlength="6">
+                            </div>
+                        </div>
+                        <div class="btn-group" style="margin-top: 1.5rem;">
+                            <button type="submit" class="btn btn-danger">
+                                🔑 Cambiar Contraseña
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script>
+        // Verificar autenticación
+        window.addEventListener('DOMContentLoaded', () => {
+            verificarAutenticacion();
+            cargarDatosUsuario();
+            cargarPerfil();
+        });
+
+        function verificarAutenticacion() {
+            const token = localStorage.getItem('token');
+            const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            if (usuario.tipo !== 'admin') {
+                alert('Acceso denegado. Solo administradores.');
+                localStorage.clear();
+                window.location.href = '../index.html';
+            }
+        }
+
+        function cargarDatosUsuario() {
+            const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+            document.getElementById('user-name').textContent = usuario.nombre || 'Usuario';
+            document.getElementById('user-email').textContent = usuario.email || '';
+
+            // Header del perfil
+            const iniciales = obtenerIniciales(usuario.nombre);
+            document.getElementById('avatar-grande').textContent = iniciales;
+            document.getElementById('perfil-nombre').textContent = usuario.nombre;
+            document.getElementById('perfil-email').textContent = usuario.email;
+
+            // Calcular días activo (ejemplo)
+            if (usuario.created_at) {
+                const creado = new Date(usuario.created_at);
+                const hoy = new Date();
+                const dias = Math.floor((hoy - creado) / (1000 * 60 * 60 * 24));
+                document.getElementById('dias-activo').textContent = dias;
+            }
+
+            // Último acceso
+            if (usuario.ultimo_acceso) {
+                const fecha = new Date(usuario.ultimo_acceso);
+                const hoy = new Date();
+                const diff = Math.floor((hoy - fecha) / (1000 * 60 * 60 * 24));
+                
+                if (diff === 0) {
+                    document.getElementById('ultimo-acceso').textContent = 'Hoy';
+                } else if (diff === 1) {
+                    document.getElementById('ultimo-acceso').textContent = 'Ayer';
+                } else {
+                    document.getElementById('ultimo-acceso').textContent = diff + ' días';
+                }
+            }
+        }
+
+        async function cargarPerfil() {
+            try {
+                const response = await API.get('/auth/perfil');
+                
+                if (response.success) {
+                    const usuario = response.data;
+                    
+                    document.getElementById('nombre').value = usuario.nombre || '';
+                    document.getElementById('email').value = usuario.email || '';
+                    document.getElementById('telefono').value = usuario.telefono || '';
+                    document.getElementById('ciudad').value = usuario.ciudad || 'San Miguel de Tucumán';
+                    document.getElementById('direccion').value = usuario.direccion || '';
+                    document.getElementById('codigo_postal').value = usuario.codigo_postal || '';
+                }
+            } catch (error) {
+                console.error('Error al cargar perfil:', error);
+            }
+        }
+
+        // Guardar perfil
+        document.getElementById('form-perfil').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const datos = {
+                nombre: document.getElementById('nombre').value,
+                telefono: document.getElementById('telefono').value || null,
+                ciudad: document.getElementById('ciudad').value || null,
+                direccion: document.getElementById('direccion').value || null,
+                codigo_postal: document.getElementById('codigo_postal').value || null
+            };
+            
+            try {
+                const response = await API.put('/auth/perfil', datos);
+                
+                if (response.success) {
+                    mostrarAlerta('✅ Perfil actualizado correctamente', 'success');
+                    
+                    const usuario = JSON.parse(localStorage.getItem('usuario'));
+                    usuario.nombre = datos.nombre;
+                    localStorage.setItem('usuario', JSON.stringify(usuario));
+                    
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    mostrarAlerta('❌ ' + (response.error || 'Error al actualizar'), 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarAlerta('❌ Error al actualizar perfil', 'error');
+            }
+        });
+
+        // Cambiar contraseña
+        document.getElementById('form-password').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const actual = document.getElementById('password-actual').value;
+            const nueva = document.getElementById('password-nueva').value;
+            const confirmar = document.getElementById('password-confirmar').value;
+            
+            if (nueva !== confirmar) {
+                mostrarAlerta('❌ Las contraseñas no coinciden', 'error');
+                return;
+            }
+            
+            if (nueva.length < 6) {
+                mostrarAlerta('❌ La contraseña debe tener al menos 6 caracteres', 'error');
+                return;
+            }
+            
+            // Aquí iría la llamada al backend para cambiar contraseña
+            // Por ahora solo mostramos un mensaje
+            mostrarAlerta('🔐 Funcionalidad de cambio de contraseña próximamente', 'error');
+            
+            // Limpiar campos
+            document.getElementById('form-password').reset();
+        });
+
+        function mostrarAlerta(mensaje, tipo) {
+            const alert = document.getElementById('alert');
+            alert.textContent = mensaje;
+            alert.className = `alert alert-${tipo}`;
+            alert.style.display = 'flex';
+            
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        }
+
+        function obtenerIniciales(nombre) {
+            if (!nombre) return 'A';
+            const palabras = nombre.trim().split(' ');
+            if (palabras.length === 1) return palabras[0].charAt(0).toUpperCase();
+            return (palabras[0].charAt(0) + palabras[palabras.length - 1].charAt(0)).toUpperCase();
+        }
+
+        function cerrarSesion() {
+            if (confirm('¿Cerrar sesión?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('usuario');
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+</html>
