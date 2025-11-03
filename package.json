@@ -5,8 +5,8 @@
   "main": "backend/server.js",
   "type": "module",
   "scripts": {
-        "start": "node backend/server.js",
-        "dev": "nodemon backend/server.js"
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js"
   },
   "keywords": [],
   "author": "Leandro Nuñez",

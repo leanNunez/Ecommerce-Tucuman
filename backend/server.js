@@ -16,10 +16,18 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middlewares globales
+// ⚡ CORS configurado para frontend Netlify y preflight
 app.use(cors({
-    origin:'*',
-    credentials: true
+    origin: 'https://gentle-starburst-f8667e.netlify.app', // tu frontend Netlify
+    credentials: true,
+    methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+    allowedHeaders: ['Content-Type','Authorization']
 }));
+
+// Manejar preflight OPTIONS para todas las rutas
+app.options('*', cors());
+
+// Middleware para parsear JSON y URL encoded
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
