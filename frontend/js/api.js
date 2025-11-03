@@ -3,7 +3,7 @@
 /**
  * Configuración de la API
  */
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'https://ecommerce-tucuman-api.onrender.com/api';
 
 /**
  * Clase para manejar todas las peticiones HTTP a la API
