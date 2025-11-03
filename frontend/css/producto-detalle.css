@@ -1,53 +1,5 @@
 /* css/detalle.css - Estilos para la página de detalle del producto */
 
-:root {
-    /* Colores */
-    --primary: #2563eb;
-    --primary-dark: #1e40af;
-    --secondary: #64748b;
-    --success: #10b981;
-    --danger: #ef4444;
-    --warning: #f59e0b;
-    --info: #3b82f6;
-    
-    /* Grises */
-    --gray-50: #f9fafb;
-    --gray-100: #f3f4f6;
-    --gray-200: #e5e7eb;
-    --gray-300: #d1d5db;
-    --gray-400: #9ca3af;
-    --gray-500: #6b7280;
-    --gray-600: #4b5563;
-    --gray-700: #374151;
-    --gray-800: #1f2937;
-    --gray-900: #111827;
-    
-    /* Espaciado */
-    --spacing-xs: 0.5rem;
-    --spacing-sm: 1rem;
-    --spacing-md: 1.5rem;
-    --spacing-lg: 2rem;
-    --spacing-xl: 3rem;
-    
-    /* Fuentes */
-    --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    --font-mono: 'Courier New', monospace;
-    
-    /* Sombras */
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    
-    /* Bordes */
-    --radius-sm: 0.25rem;
-    --radius-md: 0.5rem;
-    --radius-lg: 1rem;
-    --radius-full: 9999px;
-    
-    /* Transiciones */
-    --transition: all 0.3s ease;
-}
 /* Breadcrumb */
 .breadcrumb {
     background: #f9fafb;
@@ -62,7 +14,7 @@
 }
 
 .breadcrumb a:hover {
-    color: var(--primary-color);
+    color: var(#2563eb);
 }
 
 .breadcrumb span {
@@ -166,7 +118,7 @@
 
 .thumbnail:hover,
 .thumbnail.active {
-    border-color: var(--primary-color);
+    border-color: var(#2563eb);
     transform: scale(1.05);
 }
 
@@ -185,7 +137,7 @@
 .precio-actual {
     font-size: 48px;
     font-weight: 700;
-    color: var(--primary-color);
+    color: var(#2563eb);
 }
 
 /* Descripción */
@@ -271,7 +223,7 @@
 
 .btn-cantidad:hover {
     background: #e5e7eb;
-    color: var(--primary-color);
+    color: var(#2563eb);
 }
 
 .btn-cantidad:active {
@@ -307,18 +259,14 @@
 }
 
 #btn-agregar-carrito {
-    background: var(--primary); /* azul principal */
-    color: #ffffff;             /* texto blanco */
-    border: none;
-    border-radius: var(--radius-md);
+    background: var(#2563eb);
     transition: all 0.3s;
-    cursor: pointer;
 }
 
 #btn-agregar-carrito:hover {
-    background: var(--primary-dark); /* azul más oscuro */
+    background: var(#1e40af);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3); /* opcional, combina con el color */
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.3);
 }
 
 #btn-agregar-carrito:active {
@@ -326,7 +274,7 @@
 }
 
 #btn-agregar-carrito:disabled {
-    background: var(--gray-400);
+    background: #9ca3af;
     cursor: not-allowed;
     transform: none;
 }
@@ -365,7 +313,7 @@
 
 .producto-detalles li::before {
     content: '✓';
-    color: var(--primary-color);
+    color: var(#2563eb);
     font-weight: bold;
     margin-right: 10px;
     flex-shrink: 0;
