@@ -1,4 +1,7 @@
-# 🛒 E-commerce Tucumán
+# 🚀 E-commerce Tucumán
+
+> Plataforma completa de comercio electrónico desarrollada con tecnologías modernas
+
 
 <div align="center">
 
@@ -10,6 +13,16 @@
 **Plataforma de comercio electrónico completa desarrollada con Node.js y MySQL**
 
 [Demo en Vivo](#) • [Documentación](#características) • [Instalación](#instalación) • [Contribuir](#contribución)
+
+</div>
+
+<div align="center">
+
+### 🌐 [**VER SITIO EN VIVO**](https://ecomerce-tucuman.netlify.app/) 🌐
+
+[![Website Status](https://img.shields.io/website?url=https%3A%2F%2Fecommercetucuman.netlify.app&style=for-the-badge&logo=netlify&logoColor=white)](https://ecommercetucuman.netlify.app)
+
+**👉 Explora todas las funcionalidades del e-commerce en tiempo real 👈**
 
 </div>
 
