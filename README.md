@@ -20,7 +20,7 @@
 
 ### 🌐 [**VER SITIO EN VIVO**](https://ecomerce-tucuman.netlify.app/) 🌐
 
-[![Website Status](https://img.shields.io/website?url=https%3A%2F%2Fecommercetucuman.netlify.app&style=for-the-badge&logo=netlify&logoColor=white)](https://ecommercetucuman.netlify.app)
+[![Website Status](https://img.shields.io/website?url=https%3A%2F%2Fecomerce-tucuman.netlify.app/&style=for-the-badge&logo=netlify&logoColor=white)](https://ecomerce-tucuman.netlify.app/)
 
 **👉 Explora todas las funcionalidades del e-commerce en tiempo real 👈**
 
